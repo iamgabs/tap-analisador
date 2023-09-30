@@ -5,6 +5,30 @@ import json
 from path_not_found_exception import PathNotFoundException
 
 # imutabilidade e função pura
+def __create_output_dict(output: dict) -> dict:
+    """
+    Esta função faz basicamente a mesma coisa que a função 
+    de contar palavras faz, porém aqui não é iterado sobre 
+    um arquivo e sim sobre o dicionário que foi gerado
+    sendo chave = arquivo, valor = {palavras:frequencia}
+    """
+    final_output = {}
+
+    for keys in output.values():
+        for values in keys:
+            word = values["palavra"]
+            frequency = values["frequencia"]
+
+            # verificando se a palavra já existe
+            if word in final_output:
+                final_output[word] += frequency
+            else:
+                final_output[word] = frequency
+
+    return final_output
+
+
+# imutabilidade e função pura
 def __create_json(filename: str, words_info: list) -> None:
     """
     Esta função possui o conceito de imutabilidade pois não modifiquei
@@ -12,7 +36,10 @@ def __create_json(filename: str, words_info: list) -> None:
     dos argumentos passados
     """
     # Atualiza o nome do arquivo para ser um arquivo JSON
-    new_json_file= filename.replace('.srt', '.json')
+    if(filename.find('.srt')):
+        new_json_file= filename.replace('.srt', '.json')
+    else:
+        new_json_file = "".join([filename, '.json'])
 
     # Cria o diretório 'resultados' se não existir
     # Obs: caso o diretórtio exista, não é um problema 
@@ -89,6 +116,11 @@ def readf_by_extension(path: str = '.', extension: str = 'txt') -> callable:
 
         for files in os.listdir(path):
             readf(files)
+        
+        final_output = __create_output_dict(output)
+        list_output =  [{"palavra": word, "frequencia": count} for word, count in final_output.items()]
+        sorted_output = sorted(list_output, key=lambda item: item["frequencia"], reverse=True) # conceito de currying "implícito"
+        __create_json(os.path.basename(path), sorted_output)
 
         return output
 
