@@ -60,8 +60,8 @@ def __count_words(file_content: str) -> dict:
     dos argumentos passados
     """
     # Aplicar regex para contabilizar apenas palavras
-    words = re.findall(r"\b[a-zA-Z\']+\b", file_content.lower())
-    words = [x for x in words if len(x) > 1]
+    words = re.sub(r"<.*?>", "", file_content.lower())
+    words = re.findall(r"\b[a-zA-Z\']+\b", words)
     word_count = {}
     # OBS: eu verifico se a palavra já existe no dicionário
     for word in words:
