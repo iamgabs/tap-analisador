@@ -35,11 +35,12 @@ def __create_json(filename: str, words_info: list) -> None:
     os argumentos diretamente e de função pura, uma vez que ela só depende 
     dos argumentos passados
     """
+    new_json_file = ""
     # Atualiza o nome do arquivo para ser um arquivo JSON
-    if(filename.find('.srt')):
+    if(filename.endswith('.srt')):
         new_json_file= filename.replace('.srt', '.json')
     else:
-        new_json_file = "".join([filename, '.json'])
+        new_json_file = "".join([filename, ".json"])
 
     # Cria o diretório 'resultados' se não existir
     # Obs: caso o diretórtio exista, não é um problema 
