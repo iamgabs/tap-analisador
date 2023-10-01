@@ -93,9 +93,6 @@ def readf_by_extension(path: str = '.', extension: str = 'txt') -> callable:
             raise PathNotFoundException('The path couldn\'t be identified')
 
         def readf(file: str) -> None:
-            # Conceito de nonlocal - explicar ao pessoal
-            nonlocal output
-
             # É necessário verificar se o arquivo termina com a extensão especificada
             # no caso, arquivos .srt
             if file.endswith(extension):
